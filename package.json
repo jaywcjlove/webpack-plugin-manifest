@@ -1,0 +1,19 @@
+{
+  "name": "webpack-manifest",
+  "version": "1.0.0",
+  "description": "webpack plugin for generating asset manifests.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webpack",
+    "manifest",
+    "plugin"
+  ],
+  "author": "kenny wang <wowohoo@qq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.13.1"
+  }
+}
