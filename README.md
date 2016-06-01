@@ -1,6 +1,8 @@
 # webpack-manifest
 
-这个插件主要是给HTML文件的`<html>`标签，插入`manifest`属性，生成`manifest`文件。
+[![](https://jaywcjlove.github.io/sb/ico/npm.svg)](https://www.npmjs.com/package/webpack-manifest) 
+
+这个是`webpack`插件，主要是给HTML文件的`<html>`标签，插入`manifest`属性，生成`manifest`文件。
 
 如何实现离线访问特性，实现的步骤非常简单，主要3个步骤：  
 
@@ -24,7 +26,13 @@ Path/to/cache.js
 <html manifest=”path/to/name-of.manifest”>
 ```
 
-# 使用方法
+# 安装
+
+```bash
+$ npm i webpack-manifest --save-dev
+```
+
+# 使用
 
 ```js
 new Manifest({
