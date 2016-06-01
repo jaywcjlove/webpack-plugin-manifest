@@ -1,7 +1,8 @@
 # webpack-manifest
 
-如何实现离线访问特性  
-实现的步骤非常简单，主要3个步骤：  
+这个插件主要是给HTML文件的`<html>`标签，插入`manifest`属性，生成`manifest`文件。
+
+如何实现离线访问特性，实现的步骤非常简单，主要3个步骤：  
 
 - 在服务器上添加MIME TYPE支，让服务器能够识别manifest后缀的文件
 
@@ -32,15 +33,10 @@ new Manifest({
     fallback:{
         "/html5/":"/404.html"
     },
-    outputPath:path.resolve(__dirname, 'deploy/'+ pkg.version),
     //ext:'*'
     ext:'.jpg|.png|.gif|.ps|.jpeg'
 });
 ```
-
-## outputPath
-
-输出目录
 
 ## network
 
@@ -72,6 +68,8 @@ FALLBACK:
 ## ext
 
 `.jpg|.gif`
+
+选择一些后缀的文件进行缓存
 
 ## 更新缓存
 
@@ -107,3 +105,4 @@ FALLBACK:
 - [mozilla 使用应用缓存](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Using_the_application_cache)
 - [HTML5离线存储 初探](http://www.cnblogs.com/chyingp/archive/2012/12/01/explore_html5_cache.html)
 - [how to write a plugin](https://webpack.github.io/docs/how-to-write-a-plugin.html)
+- [the compiler instance](https://webpack.github.io/docs/plugins.html#the-compiler-instance)
