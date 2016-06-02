@@ -51,7 +51,9 @@ ManifestGenerator.prototype.apply = function(compiler){
 ManifestGenerator.prototype.setHTMLManifest = function(compilation){
     var self = this;
     self.options.htmlpath.map(function(_path){
-        var source_str = compilation.assets[_path].source();
+        var data = compilation.assets[_path];
+        if (!data) return;
+        var source_str = data.source();
         compilation.assets[_path] = {
             source: function() {
                 return source_str.replace('<html','<html manifest="'+self.options.filename+'"');
