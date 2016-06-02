@@ -35,15 +35,19 @@ $ npm i webpack-manifest --save-dev
 # 使用
 
 ```js
-new Manifest({
-    filename:'app.manifest',
-    network:["*"],
-    fallback:{
-        "/html5/":"/404.html"
-    },
-    //ext:'*'
-    ext:'.jpg|.png|.gif|.ps|.jpeg'
-});
+plugins:[
+    // 这个要放在前面就可以自动在 `<html>`标签中插入`manifest`属性
+    new HtmlWebpackPlugin({...}), 
+    new Manifest({
+        filename:'app.manifest',
+        network:["*"],
+        fallback:{
+            "/html5/":"/404.html"
+        },
+        //ext:'*'
+        ext:'.jpg|.png|.gif|.ps|.jpeg'
+    });
+]
 ```
 
 ## network
