@@ -4,28 +4,6 @@
 
 这个是`webpack`插件，主要是给HTML文件的`<html>`标签，插入`manifest`属性，生成`manifest`文件。
 
-如何实现离线访问特性，实现的步骤非常简单，主要3个步骤：  
-
-- 在服务器上添加MIME TYPE支，让服务器能够识别manifest后缀的文件
-
-> AddType text/cache-manifest manifest
-
-- 创建一个后缀名为.manifest的文件，把需要缓存的文件按格式写在里面，并用注释行标注版本
-
-```bash
-CACHE MANIFEST
-# 直接缓存的文件
-CACHE:
-Path/to/cache.js
-# version：2012-03-20
-```
-
-- 给 `<html>` 标签加 `manifest` 属性，并引用`manifest`文件
-
-```html
-<html manifest=”path/to/name-of.manifest”>
-```
-
 # 安装
 
 ```bash
@@ -35,19 +13,51 @@ $ npm i webpack-manifest --save-dev
 # 使用
 
 ```js
-plugins:[
+var Manifest= require('webpack-manifest');
+var pkg =require('./package');
+
+module.exports = {
+  plugins:[
     // 这个要放在前面就可以自动在 `<html>`标签中插入`manifest`属性
-    new HtmlWebpackPlugin({...}), 
+    new HtmlWebpackPlugin({...}),
     new Manifest({
-        filename:'app.manifest',
-        network:["*"],
-        fallback:{
-            "/html5/":"/404.html"
-        },
-        //ext:'*'
-        ext:'.jpg|.png|.gif|.ps|.jpeg'
-    });
-]
+        cache: [
+          'js/[hash:8].sorting-index.js', 
+          'css/[hash:8].sorting-test.css',
+          'css/[hash:8].index-index.css'
+        ],
+        timestamp: true,
+        // 生成的文件名字，选填
+        filename:'cache.manifest', 
+        network: ['http://*', 'https://*'],
+        fallback: ['/ /404.html'],
+        // manifest 文件中添加注释
+        headcomment: pkg.name + " v" + pkg.version, 
+        master: ['index/index.html'],
+        reg:[],
+    })
+  ]
+}
+```
+
+生成的`cache.manifest`文件  
+
+```bash
+CACHE MANIFEST
+# Time: Sat Jun 04 2016 17:11:50 GMT+0800 (CST)
+# webpack-multipage v1.0.0
+
+CACHE:
+js/8d4976fb.sorting-index.js
+css/667ca815.sorting-test.css
+css/3eaf22d0.index-index.css
+
+NETWORK:
+http://*
+https://*
+
+FALLBACK:
+/ /404.html
 ```
 
 ## network
@@ -77,43 +87,88 @@ FALLBACK:
 
 注释：第一个 URI 是资源，第二个是替补。
 
-## ext
+## master
 
-`.jpg|.gif`
+HTML页面引入`cache.manifest`
 
-选择一些后缀的文件进行缓存
+- 只需要一个页面引入使用缓存配置
+- 没引入的页面会自动读取缓存配置
+
 
 ## 更新缓存
 
 一旦应用被缓存，它就会保持缓存直到发生下列情况：
 
  - 用户清空浏览器缓存
- - manifest 文件被修改（参阅下面的提示）
+ - manifest 文件被修改
  - 由程序来更新应用缓存
 
 
-## 实例 
+# 说明
 
-完整的 Manifest 文件  
-以 `#` 开头的是注释行，但也可满足其他用途。  
+如何实现离线访问特性，实现的步骤非常简单，主要3个步骤：  
 
-```
+- 在服务器上添加MIME TYPE支，让服务器能够识别manifest后缀的文件
+
+> AddType text/cache-manifest manifest
+
+- 创建一个后缀名为.manifest的文件，把需要缓存的文件按格式写在里面，并用注释行标注版本
+
+```bash
 CACHE MANIFEST
-# 2012-02-21 v1.0.0
-/theme.css
-/logo.gif
-/main.js
+# Time: Sat Jun 04 2016 17:11:50 GMT+0800 (CST)
+# webpack-multipage v1.0.0 
 
-NETWORK:
-login.asp
-
-FALLBACK:
-/html5/ /404.html
+CACHE:
+Path/to/cache.js
 ```
 
+- 给 `<html>` 标签加 `manifest` 属性，并引用`manifest`文件
+
+```html
+<html manifest=”path/to/name-of.manifest”>
+```
+
+## Apache设置
+
+manifest的mime类型，apache下可以在httpd.conf中加上
+
+```
+AddType text/cache-manifest manifest
+AddType text/cache-manifest .appcache
+```
+
+## 自动缓存的解决方案
+
+在每个页面通过 `iframe`来引用这个静态文件，以达到我们不缓存当面页面，只缓存我们希望缓存文件的目的。
+
+# Chrome相关调试测试
+
+
+### 查看cache
+
+可以查看和清除缓存
+
+```
+chrome://appcache-internals
+```
+
+
+### 测试
+
+- 打开调试工具 `option+command+i` 选择 `Network` ，工具栏选择`Offline`  
+- 地址栏打开网址`chrome://flags/#show-saved-copy`
+
+```bash
+# 设置下面选项
+# Enable: Primary
+```
 
 # 参考资料
 
+- [node.js-api](https://github.com/webpack/docs/wiki/node.js-api)
+- [w3 offline webapps](https://www.w3.org/TR/offline-webapps/#offline)
+- [w3 offline](https://dev.w3.org/html5/pf-summary/offline.html)
 - [mozilla 使用应用缓存](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Using_the_application_cache)
 - [HTML5离线存储 初探](http://www.cnblogs.com/chyingp/archive/2012/12/01/explore_html5_cache.html)
 - [how to write a plugin](https://webpack.github.io/docs/how-to-write-a-plugin.html)
