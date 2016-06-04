@@ -1,6 +1,6 @@
 {
   "name": "webpack-manifest",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "webpack plugin for generating asset manifests.",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,8 @@
   "keywords": [
     "webpack",
     "manifest",
-    "plugin"
+    "plugin",
+    "HTML5"
   ],
   "author": "kenny wang <wowohoo@qq.com>",
   "license": "MIT",
