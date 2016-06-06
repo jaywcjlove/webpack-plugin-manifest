@@ -1,8 +1,12 @@
 {
   "name": "webpack-manifest",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "webpack plugin for generating asset manifests.",
   "main": "index.js",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/jaywcjlove/webpack-manifest"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
