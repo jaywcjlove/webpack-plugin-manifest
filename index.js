@@ -31,17 +31,19 @@ ManifestGenerator.prototype.apply = function(compiler){
 ManifestGenerator.prototype.setHTMLManifest = function(compilation){
     var self = this;
     var dest = this.options.dest;
-    this.options.master.forEach(function(_path){
+    var entry = this.options.master
+    for (var i = 0; i < entry.length; i++) {
+        var _path = entry[i]
         var data = compilation.assets[_path];
         if(!data) return;
         var source_str = data.source();
         compilation.assets[_path] = {
             source: function() {
-                var url = path.relative(_path,dest)
+                var url = path.relative(path.parse(_path).dir,dest)
                 return source_str.replace(/<html[^>]*manifest="([^"]*)"[^>]*>/,function(word){
                    return word.replace(/manifest="([^"]*)"/,'manifest="'+url+'"');
                 }).replace(/<html(\s?[^\>]*\>)/,function(word){
-                    if(word.indexOf('manifest')) return word;
+                    if(word.indexOf('manifest')>-1) return word
                     return word.replace('<html','<html manifest="'+url+'"')
                 });
             },
@@ -49,7 +51,7 @@ ManifestGenerator.prototype.setHTMLManifest = function(compilation){
                 return source_str.length;
             }
         };
-    });
+    }
 }
 /**
  * [displayPath 返回真实URL]
