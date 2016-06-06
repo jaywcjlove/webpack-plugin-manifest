@@ -33,6 +33,7 @@ ManifestGenerator.prototype.setHTMLManifest = function(compilation){
     var dest = this.options.dest;
     this.options.master.forEach(function(_path){
         var data = compilation.assets[_path];
+        if(!data) return;
         var source_str = data.source();
         compilation.assets[_path] = {
             source: function() {
@@ -76,8 +77,9 @@ ManifestGenerator.prototype.urlPathTo = function(compilation,arr){
         }else{
             item = compilation.getPath(item)
         }
-        return item
-    })
+        if(item) return item;
+        else return '--'
+    }).join(',').replace(/\,\-\-/g,'').split(',');
 }
 /**
  * creat .Manifest file.
