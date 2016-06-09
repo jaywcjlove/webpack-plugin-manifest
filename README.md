@@ -2,15 +2,15 @@
 
 [![](https://jaywcjlove.github.io/sb/ico/npm.svg)](https://www.npmjs.com/package/webpack-manifest) 
 
-这个是`webpack`插件，主要是给HTML文件的`<html>`标签，插入`manifest`属性，生成`manifest`文件。
+This is a webpack plugin. It's mainly HTML5 Cache Manifest files Generates. Generates HTML5 Cache Manifest files，webpack plugin for generating asset manifests, And to the `<html>` tag, insert the `manifest` attribute.
 
-# 安装
+# Install
 
 ```bash
 $ npm i webpack-manifest --save-dev
 ```
 
-# 使用
+# Getting Started
 
 ```js
 var Manifest= require('webpack-manifest');
@@ -19,6 +19,7 @@ var pkg =require('./package');
 module.exports = {
   plugins:[
     // 这个要放在前面就可以自动在 `<html>`标签中插入`manifest`属性
+    // This should be placed in the front can antomatically insert the `manifest` attribute in hte `<html>` tag
     new HtmlWebpackPlugin({...}),
     new Manifest({
         cache: [
@@ -26,12 +27,15 @@ module.exports = {
           'css/[hash:8].sorting-test.css',
           'css/[hash:8].index-index.css'
         ],
+        //Add time in comments.
         timestamp: true,
         // 生成的文件名字，选填
+        // The generated file name, optional.
         filename:'cache.manifest', 
         network: ['http://*', 'https://*'],
         fallback: ['/ /404.html'],
         // manifest 文件中添加注释
+        // Add notes to manifest file.
         headcomment: pkg.name + " v" + pkg.version, 
         master: ['index/index.html'],
         reg:[],
@@ -40,7 +44,7 @@ module.exports = {
 }
 ```
 
-生成的`cache.manifest`文件  
+Generated `cache.manifest` file.
 
 ```bash
 CACHE MANIFEST
