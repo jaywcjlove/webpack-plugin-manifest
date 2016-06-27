@@ -32,13 +32,17 @@ module.exports = {
         // 生成的文件名字，选填
         // The generated file name, optional.
         filename:'cache.manifest', 
-        network: ['http://*', 'https://*'],
+        // 注意*星号前面用空格隔开
+        network: [
+          'http://api.map.baidu.com/ *',
+          'http://img.jslite.com/ *'
+        ],
+        // 注意中间用空格隔开
         fallback: ['/ /404.html'],
         // manifest 文件中添加注释
         // Add notes to manifest file.
         headcomment: pkg.name + " v" + pkg.version, 
-        master: ['index/index.html'],
-        reg:[],
+        master: ['index/index.html']
     })
   ]
 }
@@ -57,8 +61,8 @@ css/667ca815.sorting-test.css
 css/3eaf22d0.index-index.css
 
 NETWORK:
-http://*
-https://*
+http://api.map.baidu.com/ * 
+http://img.jslite.com/ * 
 
 FALLBACK:
 / /404.html
@@ -66,18 +70,19 @@ FALLBACK:
 
 ## network
 
-下面的 NETWORK 小节规定文件 "login.php" 永远不会被缓存，且离线时是不可用的：
+下面的 NETWORK 小节规定文件 "login.php" 永远不会被缓存，且离线时是不可用的，
 
 ```
 NETWORK:
 login.php
+http://img.jslite.com/ * 
 ```
 
-可以使用星号来指示所有其他资源/文件都需要因特网连接：
+可以使用星号来指示所有其他资源/文件都需要因特网连接，或者你需要让某个地址下的所有请求不缓存这样配置`http://img.jslite.com/ *`，星号前面用空格隔开。
 
 ```
 NETWORK:
-*
+http://img.jslite.com/ *
 ```
 
 ## fallback
@@ -130,7 +135,7 @@ Path/to/cache.js
 - 给 `<html>` 标签加 `manifest` 属性，并引用`manifest`文件
 
 ```html
-<html manifest=”path/to/name-of.manifest”>
+<html manifest="path/to/name-of.manifest">
 ```
 
 ## Apache设置
