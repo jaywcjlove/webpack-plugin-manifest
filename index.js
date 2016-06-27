@@ -80,8 +80,10 @@ ManifestGenerator.prototype.urlPathTo = function(compilation,arr){
             item = compilation.getPath(item)
         }
         if(item) return item;
-        else return '--'
-    }).join(',').replace(/\,\-\-/g,'').split(',');
+        else return ''
+    }).filter(function(elm){
+        return (elm !== '' && typeof(elm) !== "undefined")
+    });
 }
 /**
  * creat .Manifest file.
