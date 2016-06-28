@@ -39,7 +39,7 @@ ManifestGenerator.prototype.setHTMLManifest = function(compilation){
         var source_str = data.source();
         compilation.assets[_path] = {
             source: function() {
-                var url = path.relative(path.parse(_path).dir,dest)
+                var url = path.relative(path.parse(_path).dir,dest).split(path.sep).join('/');
                 return source_str.replace(/<html[^>]*manifest="([^"]*)"[^>]*>/,function(word){
                    return word.replace(/manifest="([^"]*)"/,'manifest="'+url+'"');
                 }).replace(/<html(\s?[^\>]*\>)/,function(word){
