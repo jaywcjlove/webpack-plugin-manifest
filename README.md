@@ -82,7 +82,7 @@ http://img.jslite.com/ *
 
 ```
 NETWORK:
-http://img.jslite.com/ *
+*
 ```
 
 ## fallback
@@ -150,6 +150,22 @@ AddType text/cache-manifest .appcache
 ## 自动缓存的解决方案
 
 在每个页面通过 `iframe`来引用这个静态文件，以达到我们不缓存当面页面，只缓存我们希望缓存文件的目的。
+
+## 缓存导致接口请求没有发送出去
+
+在`NETWORK`设置白名单，但是接口请求如果是`https`有可能导致失败，接口报错信息`Provisional headers are shown`，这个原因是你指定白名单，并且请求是`https`。
+
+```
+NETWORK:
+https://api.jslite.com/ * 
+```
+
+**解决方法：** `NETWORK`白名单设置通配符`*`，如下：
+
+```
+NETWORK:
+*
+```
 
 # Chrome相关调试测试
 
