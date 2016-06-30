@@ -4,7 +4,7 @@ var path = require('path');
 
 var ManifestGenerator = function(options){
     this.options = _.extend({
-        dest:'cache.manifest',
+        filename:'cache.manifest',
         headcomment: "",
         cache:[],
         network:[],
@@ -30,7 +30,7 @@ ManifestGenerator.prototype.apply = function(compiler){
  */
 ManifestGenerator.prototype.setHTMLManifest = function(compilation){
     var self = this;
-    var dest = this.options.dest;
+    var filename = this.options.filename;
     var entry = this.options.master
     for (var i = 0; i < entry.length; i++) {
         var _path = entry[i]
@@ -39,7 +39,7 @@ ManifestGenerator.prototype.setHTMLManifest = function(compilation){
         var source_str = data.source();
         compilation.assets[_path] = {
             source: function() {
-                var url = path.relative(path.parse(_path).dir,dest).split(path.sep).join('/');
+                var url = path.relative(path.parse(_path).dir,filename).split(path.sep).join('/');
                 return source_str.replace(/<html[^>]*manifest="([^"]*)"[^>]*>/,function(word){
                    return word.replace(/manifest="([^"]*)"/,'manifest="'+url+'"');
                 }).replace(/<html(\s?[^\>]*\>)/,function(word){
@@ -95,7 +95,7 @@ ManifestGenerator.prototype.creatManifest = function(compilation){
         options = this.options,
         fallback = options.fallback,
         network = options.network,
-        dest = options.dest;
+        filename = options.filename;
     var outputData = [];
     var networkData = [];
 
@@ -124,7 +124,7 @@ ManifestGenerator.prototype.creatManifest = function(compilation){
         contents.push(fallback.join('\n'));
     }
     // Insert this list into the Webpack build as a new file asset:
-    compilation.assets[dest] = {
+    compilation.assets[filename] = {
         source: function() {
           return contents.join('\n');
         },
