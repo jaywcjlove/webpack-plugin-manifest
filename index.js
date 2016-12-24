@@ -73,17 +73,19 @@ ManifestGenerator.prototype.displayPath = function(compilation,_path){
 }
 ManifestGenerator.prototype.urlPathTo = function(compilation,arr){
     var self = this;
-    return arr.map(function(item){
-        if(/(.css|.jpg|.jpeg|.gif|.svg|.png)+(\?|\#|$)/.test(item)){
-            item = self.displayPath(compilation,item)
-        }else{
-            item = compilation.getPath(item)
-        }
+    var attt =  arr.map(function(item,idx){
+        // if(/(.css|.jpg|.jpeg|.gif|.svg|.png)+(\?|\#|$)/.test(item)){
+        //     item = self.displayPath(compilation,item)
+        // }else{
+        //     item = compilation.getPath(item)
+        // }
+        item = compilation.getPath(item)
         if(item) return item;
-        else return ''
-    }).filter(function(elm){
+    })
+    .filter(function(elm){
         return (elm !== '' && typeof(elm) !== "undefined")
     });
+    return attt
 }
 /**
  * creat .Manifest file.
