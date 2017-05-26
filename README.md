@@ -48,7 +48,7 @@ module.exports = {
 }
 ```
 
-Generated `cache.manifest` file.
+Auto generated `cache.manifest` file.
 
 ```bash
 CACHE MANIFEST
